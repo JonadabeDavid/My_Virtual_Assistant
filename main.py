@@ -64,6 +64,13 @@ def voice_actions(fraseToDo):
     elif 'pesquisar' in fraseToDo:
         keyb.press(';')
         keyb.release(';')
+        with keyb.pressed(Key.ctrl):
+            keyb.press('a')
+            keyb.release('a')
+        time.sleep(0.25)
+        keyb.type(fraseToDo.replace('pesquisar', ''))
+        time.sleep(0.25)
+        keyb.press(Key.enter)
 
 
 use_voice()
