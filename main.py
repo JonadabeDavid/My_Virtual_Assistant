@@ -1,5 +1,4 @@
 import os
-
 import speech_recognition as sr
 import pyaudio
 import speech_recognition as sr
@@ -25,24 +24,22 @@ def ouvir_microfone(frase=None):
 
             except sr.UnknownValueError:
                 print("Não Entendi!")
-            cria_audio(frase)
+            # cria_audio(frase)
         return frase
 
-import speech_recognition as sr
-from gtts import gTTS
-from playsound import playsound
+def justplay(aud):
+    playsound(aud)
 
 #Funcao responsavel por falar
 def cria_audio(audio):
+    global count
     tts = gTTS(audio,lang='pt-br')
     #Salva o arquivo de audio
-    tts.save('hello.mp3')
+    tts.save(f'hello{count}.mp3')
     print("Estou aprendendo o que você disse...")
     #Da play ao audio
-    playsound('hello.mp3')
+    justplay(f'hello{count}.mp3')
+    count = count + 1
 
-
-
-frase = ouvir_microfone()
-
-
+count = 1
+ouvir_microfone()
