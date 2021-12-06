@@ -1,12 +1,16 @@
 import os
 import speech_recognition as sr
-import pyaudio
-import speech_recognition as sr
-from gtts import gTTS
-from playsound import playsound
+import pyttsx3
+import pywhatkit
+from pynput.keyboard import Key, Controller
+import time
 
-def ouvir_microfone(frase=None):
-    microfone = sr.Recognizer()
+
+microfone = sr.Recognizer()
+talker = pyttsx3.init()
+keyb = Controller()
+
+def use_voice(frase=None):
 
     with sr.Microphone() as source:
         microfone.adjust_for_ambient_noise(source)
@@ -17,29 +21,49 @@ def ouvir_microfone(frase=None):
                 frase = microfone.recognize_google(microfone.listen(source), language='pt-BR')
                 # frase = microfone.recognize_google(audio, language='pt-BR')
                 frase = frase.lower()
-                print("Frase: " + frase)
-                if frase == 'abrir chrome':
-                    os.system("start Chrome.exe")
-                    print('Abriu!!!')
+                voice_actions(frase)
 
             except sr.UnknownValueError:
                 print("Não Entendi!")
             # cria_audio(frase)
+        talker.say('Saindo')
+        talker.runAndWait()
         return frase
 
-def justplay(aud):
-    playsound(aud)
+# def getting_frase(that_source):
+#     try:
+#         frase = microfone.recognize_google(microfone.listen(that_source), language='pt-BR')
+#         # frase = microfone.recognize_google(audio, language='pt-BR')
+#         frase = frase.lower()
+#         voice_actions(frase)
+#
+#     except sr.UnknownValueError:
+#         print("Não Entendi!")
 
-#Funcao responsavel por falar
-def cria_audio(audio):
-    global count
-    tts = gTTS(audio,lang='pt-br')
-    #Salva o arquivo de audio
-    tts.save(f'hello{count}.mp3')
-    print("Estou aprendendo o que você disse...")
-    #Da play ao audio
-    justplay(f'hello{count}.mp3')
-    count = count + 1
+def voice_actions(fraseToDo):
+    if 'maria' in fraseToDo:
+        fraseToDo = fraseToDo.replace('maria', '')
+        talker.say(fraseToDo)
+        talker.runAndWait()
+    print("Frase: " + fraseToDo)
+    if 'abrir chrome' in fraseToDo:
+        talker.say('sim senhor jonadabe, meu mestre')
+        talker.runAndWait()
+        os.system("start Chrome.exe")
+    elif 'toque' in fraseToDo:
+        music = fraseToDo.replace('toque', '')
+        resultado = pywhatkit.playonyt(music)
+        talker.say('Tocando música')
+        talker.runAndWait()
+    elif 'fechar aba' in fraseToDo:
+        # keyb.type('ola mundo')
+        print('fechou')
+        with keyb.pressed(Key.ctrl):
+            keyb.press('w')
+            keyb.release('w')
+    elif 'pesquisar' in fraseToDo:
+        keyb.press(';')
+        keyb.release(';')
 
-count = 1
-ouvir_microfone()
+
+use_voice()

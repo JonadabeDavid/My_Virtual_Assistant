@@ -1,4 +1,4 @@
-ola = 'bom dia'
-print(type(ola))
-if ola == 'bom dia':
-    print('sim')
+try:
+    print(a)
+except NameError as erro:
+    print("name:", "dia")
