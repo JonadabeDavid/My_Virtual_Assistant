@@ -1,4 +1,4 @@
-try:
-    print(a)
-except NameError as erro:
-    print("name:", "dia")
+from pynput.keyboard import Controller, Key
+keyb = Controller()
+with keyb.pressed(Key.alt):
+    keyb.press(Key.left)
